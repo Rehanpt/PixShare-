@@ -1,0 +1,7 @@
+{
+    "app":{
+        "name":"PixShare",
+        "icon":"assets/icon.png",
+        "version":"1.0.0"
+    }
+}
