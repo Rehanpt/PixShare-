@@ -1,37 +1,33 @@
-name: Build Android APK (Flet)
+name: Build Flet APK
 
 on:
-  push:
-    branches: [ main ] # Trigger on push to the main branch
-  workflow_dispatch: # Allows manual trigger from GitHub
+  workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-latest # A clean Linux server
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Setup Java JDK (Needed for Android SDK)
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17' # Use a recent JDK version
+    - name: Install Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
 
-      - name: Setup Flutter (Needed for Flet)
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.22.0' # Use a recent Flutter version
+    - name: Install flet
+      run: pip install flet flet-cli requests
 
-      - name: Install Flet CLI
-        run: pip install flet
+    - name: Build APK
+      run: |
+        flet build apk
+        ls -R build
 
-      - name: Run Flet Build APK
-        run: flet build apk --module-name app
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: PixShare-APK
-          path: build/app/outputs/flutter-apk/app-release.apk
+    - name: Upload APK
+      uses: actions/upload-artifact@v3
+      with:
+        name: pixshare-apk
+        path: |
+          build/*.apk
+          build/**/*.apk
