@@ -21,7 +21,7 @@ jobs:
 
     - name: Build APK
       run: |
-        flet build apk
+        flet build apk --module-name app
         ls -R build
 
     - name: Upload APK
